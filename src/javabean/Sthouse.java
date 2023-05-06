@@ -139,4 +139,36 @@ public class Sthouse {
 		DBHelp.close(con, ps, rs);
 		return list;
 	}
+	public ArrayList<Map> querybypage(String id,String key, int pageNo, int pageSize) throws ClassNotFoundException, SQLException{
+		Connection con = DBHelp.GetConnection();
+		String sql = "SELECT sthouse.storehouseid, sthouse.storehousename, sthouse.storehouseaddress, COALESCE(SUM(storehouse.num), 0) AS total_amount FROM sthouse LEFT JOIN storehouse ON storehouse.storehouseid = sthouse.storehouseid";
+		if(id!=null&&id!=""){
+			sql+=" where sthouse.storehouseid='"+id+"'";
+			if(key!=null&&key!=""){
+				sql+=" and sthouse.storehouseaddress LIKE '%"+key+"%'";
+			}
+		}else{
+			if(key!=null&&key!=""){
+				sql+=" where sthouse.storehouseaddress LIKE '%"+key+"%'";
+			}
+		}
+		sql+=" GROUP BY sthouse.storehouseid, sthouse.storehousename, sthouse.storehouseaddress"
+				+" ORDER BY sthouse.storehouseid";
+		int start = (pageNo - 1) * pageSize;
+		sql += " limit " + start + "," + pageSize;
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		ArrayList<Map> list = new ArrayList<Map>();
+		while (rs.next()) { // 将结果集中的每条记录转为对象
+			Map map = new HashMap();
+			map.put("storehouseid", rs.getString(1));
+			map.put("storehousename", rs.getString(2));
+			map.put("storehouseaddress", rs.getString(3));
+			map.put("total_amount", rs.getInt(4));
+			list.add(map);
+		}
+		DBHelp.close(con, ps, rs);
+		return list;
+	}
+
 }

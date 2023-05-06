@@ -145,4 +145,30 @@ public class User {
 		DBHelp.close(con, ps, rs);
 		return list;
 	}
+	
+	public ArrayList<Map> querybypage(String role, int pageNo, int pageSize) throws ClassNotFoundException, SQLException{
+		Connection con=DBHelp.GetConnection();
+		String sql="select * from user";
+		if (role != null && role != "")
+			sql += " where role=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		if (role != null && role != "")
+			ps.setString(1, role);
+		
+		sql += " order by username";
+		int start = (pageNo - 1) * pageSize;
+		sql += " limit " + start + "," + pageSize;
+		ResultSet rs = ps.executeQuery();
+		ArrayList<Map> list=new ArrayList<Map>();
+		while(rs.next()){
+			Map map = new HashMap();
+			map.put("username", rs.getString(1));
+			map.put("password", rs.getString(2));
+			map.put("role", rs.getString(3));
+			list.add(map);
+		}
+		DBHelp.close(con, ps, rs);
+		return list;
+	}
+
 }

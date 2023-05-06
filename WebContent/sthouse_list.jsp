@@ -10,11 +10,25 @@
 
 	String id = request.getParameter("id");
 	String key = request.getParameter("key");
-	ArrayList<Map> list = new Sthouse().queryByStatic(id, key);
-	if (id == null)
+/* 	ArrayList<Map> list = new Sthouse().queryByStatic(id, key);
+ */	if (id == null)
 		id = "";
 	if (key == null)
 		key = "";
+	
+	int pageNo = 1;
+	if (request.getParameter("pageNo") != null) {
+		pageNo = Integer.parseInt(request.getParameter("pageNo"));
+	}
+	int pageSize = 5; 
+	int totalRow = new Storehouse().getTotalRow();
+	int totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow/pageSize + 1;
+	System.out.println("totalRow: " + totalRow);
+	System.out.println("pageSize: " + pageSize);
+	System.out.println("totalPage: " + totalPage);
+	System.out.println("pageNo: " + pageNo);
+
+	ArrayList<Map> list = new Sthouse().querybypage(id, key, pageNo,pageSize);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -163,12 +177,49 @@
 				<a class='btn btn-sm  btn-dark' style='border-radius: 15px;'
 					href="sthouse_add.html">添加</a>
 			</div>
+			<nav class="mt-2">
+					<ul class="pagination justify-content-center mt-2">
+
+						<li class="page-item <%=pageNo == 1 ? "disabled" : ""%>"><a
+							class="page-link text-dark" href="sthouse_list.jsp?pageNo=1"
+							aria-label="首页"> <span aria-hidden="true">&laquo;</span> <span
+								class="sr-only">首页</span>
+						</a></li>
+
+						<li class="page-item <%=pageNo == 1 ? "disabled" : ""%>"><a
+							class="page-link text-dark"
+							href="sthouse_list.jsp?pageNo=<%=pageNo - 1%>"
+							aria-label="上一页"> <span aria-hidden="true">&lt;</span> <span
+								class="sr-only">上一页</span>
+						</a></li>
+
+						<li class="page-item active"><a
+							class="page-link bg-dark text-white" href="#"> <%=pageNo%>
+						</a></li>
+
+						<li class="page-item <%=pageNo == totalPage ? "disabled" : ""%>">
+							<a class="page-link text-dark"
+							href="sthouse_list.jsp?pageNo=<%=pageNo + 1%>"
+							aria-label="下一页"> <span aria-hidden="true">&gt;</span> <span
+								class="sr-only">下一页</span>
+						</a>
+						</li>
+
+						<li class="page-item <%=pageNo == totalPage ? "disabled" : ""%>">
+							<a class="page-link text-dark"
+							href="sthouse_list.jsp?pageNo=<%=totalPage%>" aria-label="尾页">
+								<span aria-hidden="true">&raquo;</span> <span class="sr-only">尾页</span>
+						</a>
+						</li>
+
+					</ul>
+				</nav>
 		</div>
 	</div>
 	</main>
-	<div class="container py-3">
+	<div class="container py-0">
 		<footer
-			class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+			class="d-flex flex-wrap justify-content-between align-items-center py-0 my-4 border-top">
 			<div class="col-md-4">
 				<span class="mb-3 mb-md-0 text-muted"> &copy; 2023 王政豪</span>
 			</div>

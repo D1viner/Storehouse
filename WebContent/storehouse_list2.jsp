@@ -12,7 +12,7 @@
 	String key = request.getParameter("key");
 	String inventorydatefrom = request.getParameter("inventorydatefrom");
 	String inventorydateto = request.getParameter("inventorydateto");
-	ArrayList<Map> list = new Storehouse().queryCom(no, key, inventorydatefrom, inventorydateto);
+	/* ArrayList<Map> list = new Storehouse().queryCom(no, key, inventorydatefrom, inventorydateto); */
 	if (no == null)
 		no = "";
 	if (key == null)
@@ -21,6 +21,15 @@
 		inventorydatefrom = "";
 	if (inventorydateto == null)
 		inventorydateto = "";
+
+	int pageNo = 1;
+	if (request.getParameter("pageNo") != null) {
+		pageNo = Integer.parseInt(request.getParameter("pageNo"));
+	}
+	int pageSize = 6; 
+	int totalRow = new Storehouse().getTotalRow();
+	int totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow / pageSize + 1;
+	ArrayList<Map> list = new Storehouse().querybypage(no, key, inventorydatefrom, inventorydateto, pageNo,pageSize);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -131,6 +140,7 @@ style>.rounded-input {
 			</div>
 		</div>
 	</header>
+
 	<main class="flex-grow-1">
 	<div class="container my-3">
 		<div class="card border-0">
@@ -208,17 +218,57 @@ style>.rounded-input {
 						%>
 					</tbody>
 				</table>
+
+
 			</div>
 			<div class="card-footer border-0 bg-body">
 				<a class='btn btn-sm btn-dark' style='border-radius: 15px;'
 					href="storehouse_add.html">添加</a>
 			</div>
+			<nav class="mt-2">
+					<ul class="pagination justify-content-center mt-2">
+
+						<li class="page-item <%=pageNo == 1 ? "disabled" : ""%>"><a
+							class="page-link text-dark" href="storehouse_list2.jsp?pageNo=1"
+							aria-label="首页"> <span aria-hidden="true">&laquo;</span> <span
+								class="sr-only">首页</span>
+						</a></li>
+
+						<li class="page-item <%=pageNo == 1 ? "disabled" : ""%>"><a
+							class="page-link text-dark"
+							href="storehouse_list2.jsp?pageNo=<%=pageNo - 1%>"
+							aria-label="上一页"> <span aria-hidden="true">&lt;</span> <span
+								class="sr-only">上一页</span>
+						</a></li>
+
+						<li class="page-item active"><a
+							class="page-link bg-dark text-white" href="#"> <%=pageNo%>
+						</a></li>
+
+						<li class="page-item <%=pageNo == totalPage ? "disabled" : ""%>">
+							<a class="page-link text-dark"
+							href="storehouse_list2.jsp?pageNo=<%=pageNo + 1%>"
+							aria-label="下一页"> <span aria-hidden="true">&gt;</span> <span
+								class="sr-only">下一页</span>
+						</a>
+						</li>
+
+						<li class="page-item <%=pageNo == totalPage ? "disabled" : ""%>">
+							<a class="page-link text-dark"
+							href="storehouse_list2.jsp?pageNo=<%=totalPage%>" aria-label="尾页">
+								<span aria-hidden="true">&raquo;</span> <span class="sr-only">尾页</span>
+						</a>
+						</li>
+
+					</ul>
+				</nav>
 		</div>
 	</div>
 	</main>
-	<div class="container py-3">
+
+	<div class="container py-0">
 		<footer
-			class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+			class="d-flex flex-wrap justify-content-between align-items-center py-0 my-4 border-top">
 			<div class="col-md-4">
 				<span class="mb-3 mb-md-0 text-muted"> &copy; 2023 王政豪</span>
 			</div>

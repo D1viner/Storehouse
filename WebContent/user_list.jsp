@@ -11,7 +11,16 @@
 		user_role = "User";
 
 	String role = request.getParameter("role");
-	ArrayList<Map> list = new User().queryByRole(role);
+	/* 	ArrayList<Map> list = new User().queryByRole(role);
+	 */
+	int pageNo = 1;
+	if (request.getParameter("pageNo") != null) {
+		pageNo = Integer.parseInt(request.getParameter("pageNo"));
+	}
+	int pageSize = 6;
+	int totalRow = new Storehouse().getTotalRow();
+	int totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow / pageSize + 1;
+	ArrayList<Map> list = new User().querybypage(role, pageNo, pageSize);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -166,13 +175,55 @@
 				<a class='btn btn-sm btn-dark' href="user_add.html"
 					style="border-radius: 15px;">添加</a>
 			</div>
+			<nav class="mt-2">
+					<ul class="pagination justify-content-center mt-2">
+
+						<%-- 首页链接 --%>
+						<li class="page-item <%=pageNo == 1 ? "disabled" : ""%>"><a
+							class="page-link text-dark" href="user_list.jsp?pageNo=1"
+							aria-label="首页"> <span aria-hidden="true">&laquo;</span> <span
+								class="sr-only">首页</span>
+						</a></li>
+
+						<%-- 上一页链接 --%>
+						<li class="page-item <%=pageNo == 1 ? "disabled" : ""%>"><a
+							class="page-link text-dark"
+							href="user_list.jsp?pageNo=<%=pageNo - 1%>"
+							aria-label="上一页"> <span aria-hidden="true">&lt;</span> <span
+								class="sr-only">上一页</span>
+						</a></li>
+
+						<%-- 当前页码链接 --%>
+						<li class="page-item active"><a
+							class="page-link bg-dark text-white" href="#"> <%=pageNo%>
+						</a></li>
+
+						<%-- 下一页链接 --%>
+						<li class="page-item <%=pageNo < totalPage ? "disabled" : ""%>">
+							<a class="page-link text-dark"
+							href="user_list.jsp?pageNo=<%=pageNo + 1%>"
+							aria-label="下一页"> <span aria-hidden="true">&gt;</span> <span
+								class="sr-only">下一页</span>
+						</a>
+						</li>
+
+						<%-- 尾页链接 --%>
+						<li class="page-item <%=pageNo < totalPage ? "disabled" : ""%>">
+							<a class="page-link text-dark"
+							href="user_list.jsp?pageNo=<%=totalPage%>" aria-label="尾页">
+								<span aria-hidden="true">&raquo;</span> <span class="sr-only">尾页</span>
+						</a>
+						</li>
+
+					</ul>
+				</nav>
 		</div>
 	</div>
 
 	</main>
-	<div class="container py-3">
+	<div class="container py-0">
 		<footer
-			class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+			class="d-flex flex-wrap justify-content-between align-items-center py-0 my-4 border-top">
 			<div class="col-md-4">
 				<span class="mb-3 mb-md-0 text-muted"> &copy; 2023 王政豪</span>
 			</div>
@@ -185,7 +236,8 @@
 				<li class="nav-item"><a href="https://github.com/D1viner"
 					class="nav-link px-2 text-muted">Github</a></li>
 				<li class="nav-item"><a href="#"
-					class="nav-link px-2 text-muted"  onclick="alert('微信号：wzh791307963')">WeChat</a></li>
+					class="nav-link px-2 text-muted"
+					onclick="alert('微信号：wzh791307963')">WeChat</a></li>
 
 				<li class="nav-item">
 					<h5 class="mb-0 mx-3">|</h5>
