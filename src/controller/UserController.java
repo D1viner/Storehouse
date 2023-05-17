@@ -113,6 +113,10 @@ public class UserController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String role = request.getParameter("role");
+		System.out.print(username);
+		System.out.print(password);
+		System.out.print(role);
+
 		User user = new User(username, password, role);
 		try {
 			user.register();

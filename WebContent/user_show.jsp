@@ -15,13 +15,16 @@
 	font-size: 1.5rem;
 	font-family: Roboto;
 }
+
 .card {
 	margin-top: 2rem;
 }
+
 .form-check-input[type="radio"]:checked {
 	background-color: #343a40;
 	border-color: #343a40;
 }
+
 .rounded-input {
 	border-radius: 1rem;
 }
@@ -50,14 +53,16 @@
 							<div class="form-floating mb-3 rounded-input">
 								<input type="text" class="form-control rounded-input"
 									id="floatingInput" name="username" placeholder="username"
-									value="${username}" readonly> <label for="floatingInput">Username</label>
+									value="${username}" readonly> <label
+									for="floatingInput">Username</label>
 							</div>
 							<div class="form-floating mb-3 rounded-input">
 								<input type="text" class="form-control rounded-input "
 									id="floatingPassword" placeholder="Password" name="password"
-									value="${ur.password }"> <label
-									for="floatingPassword">Password</label>
+									value="${ur.password }"> <label for="floatingPassword">Password</label>
 							</div>
+							<p id="passwordError" class="text-danger" style="display: none;">密码长度不能少于6位</p>
+
 							<div class="list-group mb-2">
 								<label class="list-group-item d-flex gap-4"> <input
 									class="form-check-input flex-shrink-0" type="radio" name="role"
@@ -103,7 +108,8 @@
 				<li class="nav-item"><a href="https://github.com/D1viner"
 					class="nav-link px-2 text-muted">Github</a></li>
 				<li class="nav-item"><a href="#"
-					class="nav-link px-2 text-muted"  onclick="alert('微信号：wzh791307963')">WeChat</a></li>
+					class="nav-link px-2 text-muted"
+					onclick="alert('微信号：wzh791307963')">WeChat</a></li>
 
 				<li class="nav-item">
 					<h5 class="mb-0 mx-3">|</h5>
@@ -118,5 +124,33 @@
 			</ul>
 		</footer>
 	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			var passwordInput = document.getElementById("floatingPassword");
+			var passwordError = document.getElementById("passwordError");
+			var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+
+			passwordInput.addEventListener("input", function() {
+				var password = passwordInput.value;
+
+				if (password.length < 6) {
+					passwordError.textContent = "密码长度不能少于6位";
+					passwordError.style.display = "block";
+				} else if (!/[a-z]/.test(password)) {
+					passwordError.textContent = "密码必须包含至少一个小写字母";
+					passwordError.style.display = "block";
+				} else if (!/[A-Z]/.test(password)) {
+					passwordError.textContent = "密码必须包含至少一个大写字母";
+					passwordError.style.display = "block";
+				} else if (!/\d/.test(password)) {
+					passwordError.textContent = "密码必须包含至少一个数字";
+					passwordError.style.display = "block";
+				} else {
+					passwordError.style.display = "none";
+				}
+			});
+		});
+	</script>
 </body>
 </html>

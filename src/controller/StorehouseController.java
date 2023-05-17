@@ -76,7 +76,7 @@ public class StorehouseController {
 		model.addAttribute("begin", begin);
 		model.addAttribute("end", end);
 
-		return "storehouse_list2.jsp";
+		return "storehouse_list.jsp";
 	}
 
 	@RequestMapping("/add")
