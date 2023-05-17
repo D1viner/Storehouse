@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import model.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -69,6 +70,20 @@ public class SthouseController {
 		model.addAttribute("end", end);
 
 		return "sthouse_list.jsp";
+	}
+	
+	@RequestMapping("/stadd")
+	public String add(HttpServletRequest request) throws ClassNotFoundException, SQLException {
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String address = request.getParameter("address");
+		Sthouse st = new Sthouse(id,name,address);
+		try {
+			st.add();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/sthouse_list";
 	}
 	
 	@RequestMapping("/sthouseshow")
