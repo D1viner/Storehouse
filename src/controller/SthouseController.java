@@ -73,22 +73,18 @@ public class SthouseController {
 	}
 	
 	@RequestMapping("/stadd")
-	public String add(HttpServletRequest request) throws ClassNotFoundException, SQLException {
-		String id = request.getParameter("id");
-		String name = request.getParameter("name");
-		String address = request.getParameter("address");
-		Sthouse st = new Sthouse(id,name,address);
-		try {
-			st.add();
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+	public String add(Sthouse st) throws ClassNotFoundException, SQLException {
+		st.add();
 		return "redirect:/sthouse_list";
 	}
 	
+	@RequestMapping("/stdel")
+	public String delete(String id) throws ClassNotFoundException, SQLException{
+		Sthouse.del(id);
+		return "redirect:/sthouse_list";
+	}
 	@RequestMapping("/sthouseshow")
-	public String show(HttpServletRequest request, Model model) throws ClassNotFoundException, SQLException {
-		String id = request.getParameter("id");
+	public String show(String id, Model model) throws ClassNotFoundException, SQLException {
 		Sthouse st = new Sthouse().getOne(id);
 		model.addAttribute("id", id);
 		model.addAttribute("st", st);
@@ -96,16 +92,8 @@ public class SthouseController {
 	}
 
 	@RequestMapping("/stupdate")
-	public String update(HttpServletRequest request) throws ClassNotFoundException, SQLException {
-		String id = request.getParameter("id");
-		String name = request.getParameter("name");
-		String address = request.getParameter("address");
-		Sthouse st = new Sthouse(id, name,address);
-		try {
-			st.update();
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+	public String update(Sthouse st) throws ClassNotFoundException, SQLException {
+		st.update();
 		return "redirect:/sthouse_list";
 	}
 }

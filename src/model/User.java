@@ -91,7 +91,7 @@ public class User {
 		DBHelp.close(con, ps, rs);
 		return list;
 	}
-	public void del() throws ClassNotFoundException, SQLException{
+	public static void del(String username) throws ClassNotFoundException, SQLException{
 		Connection con=DBHelp.GetConnection();
 		String sql="delete from user where username=?";
 		PreparedStatement ps=con.prepareStatement(sql);

@@ -73,7 +73,7 @@ public class Sthouse {
 		DBHelp.close(con, ps, null);
 	}
 
-	public void del() throws ClassNotFoundException, SQLException {
+	public static void del(String id) throws ClassNotFoundException, SQLException {
 		Connection con = DBHelp.GetConnection();
 		String sql = "delete from sthouse where storehouseid=?";
 		PreparedStatement ps = con.prepareStatement(sql);

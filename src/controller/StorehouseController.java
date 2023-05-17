@@ -68,7 +68,7 @@ public class StorehouseController {
 		model.addAttribute("key", key);
 		model.addAttribute("inventorydatefrom", inventorydatefrom);
 		model.addAttribute("inventorydateto", inventorydateto);
-		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("pageNo", pageNo); 
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("totalRow", totalRow);
 		model.addAttribute("totalPage", totalPage);
@@ -80,57 +80,27 @@ public class StorehouseController {
 	}
 
 	@RequestMapping("/add")
-	public String add(HttpServletRequest request) throws ClassNotFoundException, SQLException {
-		String no = request.getParameter("no");
-		String name = request.getParameter("name");
-		Integer price = Integer.parseInt(request.getParameter("price"));
-		String num = request.getParameter("num");
-		String storehouseid = request.getParameter("storehouseid");
-		String inventorydate = request.getParameter("inventorydate");
-		Storehouse sh = new Storehouse(no, name, price, num, storehouseid, inventorydate);
-		try {
+	public String add(Storehouse sh) throws ClassNotFoundException, SQLException {
 			sh.add();
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
 		return "redirect:/storehouse_list";
 	}
 
 	@RequestMapping("/del")
-	public String delete(HttpServletRequest request) throws ClassNotFoundException, SQLException {
-		String no = request.getParameter("no");
-		Storehouse sh = new Storehouse(no);
-		try {
-			sh.del();
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+	public String delete(String no) throws ClassNotFoundException, SQLException{
+		Storehouse.del(no);
 		return "redirect:/storehouse_list";
 	}
 
 	@RequestMapping("/show")
-	public String show(HttpServletRequest request, Model model) throws ClassNotFoundException, SQLException {
-		String no = request.getParameter("no");
+	public String show(String no, Model model) throws ClassNotFoundException, SQLException {
 		Storehouse sh = new Storehouse().getOne(no);
-		model.addAttribute("no", no);
 		model.addAttribute("storehouse", sh);
 		return "storehouse_show.jsp";
 	}
 
 	@RequestMapping("/update")
-	public String update(HttpServletRequest request) throws ClassNotFoundException, SQLException {
-		String no = request.getParameter("no");
-		String name = request.getParameter("name");
-		Integer price = Integer.parseInt(request.getParameter("price"));
-		String num = request.getParameter("num");
-		String storehouseid = request.getParameter("storehouseid");
-		String inventorydate = request.getParameter("inventorydate");
-		Storehouse sh = new Storehouse(no, name, price, num, storehouseid, inventorydate);
-		try {
-			sh.update();
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+	public String update(Storehouse sh) throws ClassNotFoundException, SQLException {
+		sh.update();
 		return "redirect:/storehouse_list";
 	}
 

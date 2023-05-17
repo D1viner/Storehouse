@@ -68,7 +68,7 @@
 							<div class="form-floating mb-3 rounded-input">
 								<input type="text" class="form-control rounded-input"
 									id="floatingInput" name="no" placeholder="No" readonly
-									value="${no}"> <label for="floatingInput">No</label>
+									value="${storehouse.no}"> <label for="floatingInput">No</label>
 							</div>
 							<div class="form-floating mb-3 rounded-input">
 								<input type="text" class="form-control rounded-input"
