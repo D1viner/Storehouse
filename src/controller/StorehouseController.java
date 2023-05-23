@@ -14,73 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class StorehouseController {
-/*	@RequestMapping("/storehouse_list")
-	public String list(HttpServletRequest request, HttpSession session, Model model)
-			throws ClassNotFoundException, SQLException {
-		//用户
-		User user = (User) session.getAttribute("current_user");
-		if (user == null) {
-		    return "redirect:/user_login.html";
-		}
-		//权限判断
-		String user_role;
-		if (user.getRole().equals("0")) {
-			user_role = "Admin";
-		} else
-			user_role = "User";
 
-		String no = request.getParameter("no");
-		String key = request.getParameter("key");
-		String inventorydatefrom = request.getParameter("inventorydatefrom");
-		String inventorydateto = request.getParameter("inventorydateto");
-
-		if (no == null)
-			no = "";
-		if (key == null)
-			key = "";
-		if (inventorydatefrom == null)
-			inventorydatefrom = "";
-		if (inventorydateto == null)
-			inventorydateto = "";
-		
-		//分页
-		int pageNo = 1;
-		if (request.getParameter("pageNo") != null) {
-			pageNo = Integer.parseInt(request.getParameter("pageNo"));
-		}
-		int pageSize = 6;
-		int totalRow = new Storehouse().getTotalRow();
-		int totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow / pageSize + 1;
-		//list
-		ArrayList<Map> list = new Storehouse().querybypage(no, key, inventorydatefrom, inventorydateto, pageNo,
-				pageSize);
-
-		int begin = 1;
-		if (pageNo % 5 == 0)
-			begin = (pageNo / 5 - 1) * 5 + 1;
-		else
-			begin = (pageNo / 5) * 5 + 1;
-		int end = begin + 4;
-		if (end > totalPage)
-			end = totalPage;
-
-		model.addAttribute("user", user);
-		model.addAttribute("user_role", user_role);
-		
-		model.addAttribute("no", no);
-		model.addAttribute("key", key);
-		model.addAttribute("inventorydatefrom", inventorydatefrom);
-		model.addAttribute("inventorydateto", inventorydateto);
-		
-		model.addAttribute("pageNo", pageNo); 
-		model.addAttribute("totalPage", totalPage);
-		model.addAttribute("begin", begin);
-		model.addAttribute("end", end);
-		
-		model.addAttribute("list", list);
-		return "storehouse_list.jsp";
-	}*/
-	
 	@RequestMapping("/storehouse_list")
 	public String list(@RequestParam(defaultValue="1") int pageNo,String no,String key,String inventorydatefrom,String inventorydateto, HttpSession session, Model model)
 			throws ClassNotFoundException, SQLException {
@@ -104,7 +38,7 @@ public class StorehouseController {
 			inventorydatefrom = "";
 		if (inventorydateto == null)
 			inventorydateto = "";
-		
+		//分页
 		int pageSize = 6;
 		int totalRow = new Storehouse().getTotalRow();
 		int totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow / pageSize + 1;

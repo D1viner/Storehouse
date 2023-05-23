@@ -3,6 +3,7 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -173,16 +174,30 @@ public class User {
 		int start = (pageNo - 1) * pageSize;
 		sql += " limit " + start + "," + pageSize;
 		ResultSet rs = ps.executeQuery();
-		ArrayList<Map> list=new ArrayList<Map>();
+/*		ArrayList<Map> list=new ArrayList<Map>();
 		while(rs.next()){
 			Map map = new HashMap();
 			map.put("username", rs.getString(1));
 			map.put("password", rs.getString(2));
 			map.put("role", rs.getString(3));
 			list.add(map);
-		}
+		}*/
+		ArrayList<Map> list=converList(rs);
 		DBHelp.close(con, ps, rs);
 		return list;
 	}
-
+	
+	public ArrayList<Map> converList(ResultSet rs) throws SQLException {
+	    ArrayList<Map> list = new ArrayList<>();
+	    ResultSetMetaData md = rs.getMetaData();
+	    int columnCount = md.getColumnCount();
+	    while (rs.next()) {
+	        Map map = new HashMap();
+	        for (int i = 1; i < columnCount+1; i++) {
+	            map.put(md.getColumnName(i), rs.getObject(i));
+	        }
+	        list.add(map); 
+	    }   
+	    return list; 
+	}
 }

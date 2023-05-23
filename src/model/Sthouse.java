@@ -173,7 +173,7 @@ public class Sthouse {
 		sql += " limit " + start + "," + pageSize;
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
-		ArrayList<Map> list = new ArrayList<Map>();
+/*		ArrayList<Map> list = new ArrayList<Map>();
 		while (rs.next()) { // 将结果集中的每条记录转为对象
 			Map map = new HashMap();
 			map.put("storehouseid", rs.getString(1));
@@ -181,9 +181,26 @@ public class Sthouse {
 			map.put("storehouseaddress", rs.getString(3));
 			map.put("total_amount", rs.getInt(4));
 			list.add(map);
-		}
+		}*/
+		
+		ArrayList<Map> list = converList(rs);
 		DBHelp.close(con, ps, rs);
 		return list;
+	}
+	
+	public ArrayList<Map> converList(ResultSet rs) throws SQLException {
+	    ArrayList<Map> list = new ArrayList<>();
+	    ResultSetMetaData md = rs.getMetaData();
+	    int columnCount = md.getColumnCount();
+	    while (rs.next()) {
+	        Map map = new HashMap();
+	        for (int i = 1; i < columnCount; i++) {
+	            map.put(md.getColumnName(i), rs.getObject(i));
+	        }
+			map.put("total_amount", rs.getInt(4)); 
+	        list.add(map); 
+	    }
+	    return list; 
 	}
 
 }

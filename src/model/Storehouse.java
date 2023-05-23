@@ -74,6 +74,7 @@
 		public void setNum(String num) {
 			this.num = num;
 		}
+		
 	
 		public ArrayList<Storehouse> list() throws ClassNotFoundException, SQLException {
 			Connection con = DBHelp.GetConnection();
@@ -250,7 +251,7 @@
 			return rowcount;
 		}
 		
-		public ArrayList<Map> querybypage(String no, String key, String inventorydatefrom, String inventorydateto, int pageNo, int pageSize)
+/*		public ArrayList<Map> querybypage(String no, String key, String inventorydatefrom, String inventorydateto, int pageNo, int pageSize)
 				throws ClassNotFoundException, SQLException {
 			Connection con = DBHelp.GetConnection();
 			String sql = "select no,name,price,num,storehousename,inventorydate"
@@ -290,6 +291,61 @@
 	
 			DBHelp.close(con, ps, rs);
 			return list;
+		}*/
+		public ArrayList<Map> querybypage(String no, String key, String inventorydatefrom, String inventorydateto, int pageNo, int pageSize)
+				throws ClassNotFoundException, SQLException {
+			Connection con = DBHelp.GetConnection();
+			String sql = "select no,name,price,num,storehousename,inventorydate"
+					+ " from sthouse,storehouse where storehouse.storehouseid=sthouse.storehouseid";
+			if (no != null && no != "") {
+				sql += " and storehouse.no='" + no + "'";
+			}
+			if (key != null && key != "") {
+				sql += " and (name like '%" + key + "%' or sthouse.storehousename like '%" + key + "%')";
+			}
+			if (inventorydatefrom != null && inventorydatefrom != "") {
+				sql += " and inventorydate>='" + inventorydatefrom + "'";
+				if (inventorydateto != null && inventorydateto != "") {
+					sql += " and inventorydate<='" + inventorydateto + "'";
+				}
+			} else {
+				if (inventorydateto != null && inventorydateto != "") {
+					sql += " and inventorydate<='" + inventorydateto + "'";
+				}
+			}
+			sql += " order by no";
+			int start = (pageNo - 1) * pageSize;
+			sql += " limit " + start + "," + pageSize;
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			ArrayList<Map> list =converList(rs);
+/*			ArrayList<Map> list = new ArrayList<Map>();
+			while (rs.next()) {
+				Map map = new HashMap();
+				map.put("no", rs.getString(1));
+				map.put("name", rs.getString(2));
+				map.put("price", rs.getInt(3));
+				map.put("num", rs.getString(4));
+				map.put("storehousename", rs.getString(5));
+				map.put("inventorydate", rs.getString(6));
+				list.add(map);
+			}*/
+			DBHelp.close(con, ps, rs);
+			return list;
+		}
+		public ArrayList<Map> converList(ResultSet rs) throws SQLException {
+		    ArrayList<Map> list = new ArrayList<>();
+		    ResultSetMetaData md = rs.getMetaData();
+		    int columnCount = md.getColumnCount();
+		    while (rs.next()) {
+		        Map map = new HashMap();
+		        for (int i = 1; i < columnCount+1; i++) {
+		            map.put(md.getColumnName(i), rs.getObject(i));
+		        }
+		        list.add(map);
+		    }
+		    return list;
 		}
 	
 	}
