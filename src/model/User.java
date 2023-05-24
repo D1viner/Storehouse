@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class User {
 	private String username;
 	private String password;
@@ -21,13 +20,14 @@ public class User {
 		this.password = password;
 		this.role = role;
 	}
-	
-	public User(){
+
+	public User() {
 	}
-	
-	public User(String username){
-		this.username=username;
+
+	public User(String username) {
+		this.username = username;
 	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -76,39 +76,41 @@ public class User {
 		} else
 			return false;
 	}
-	public ArrayList<User> list() throws ClassNotFoundException, SQLException{
-		Connection con=DBHelp.GetConnection();
-		String sql="select * from user order by username";
-		PreparedStatement ps=con.prepareStatement(sql);
-		ResultSet rs=ps.executeQuery(sql);
-		ArrayList<User> list=new ArrayList<User>();
-		while(rs.next()){ //将结果集中的每条记录转为对象
-			User ur=new User();
+
+	public ArrayList<User> list() throws ClassNotFoundException, SQLException {
+		Connection con = DBHelp.GetConnection();
+		String sql = "select * from user order by username";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery(sql);
+		ArrayList<User> list = new ArrayList<User>();
+		while (rs.next()) { // 将结果集中的每条记录转为对象
+			User ur = new User();
 			ur.setUsername(rs.getString("username"));
 			ur.setPassword(rs.getString("password"));
 			ur.setRole(rs.getString("role"));
-			list.add(ur); //将对象添加到对象列表
+			list.add(ur); // 将对象添加到对象列表
 		}
 		DBHelp.close(con, ps, rs);
 		return list;
 	}
-	public static void del(String username) throws ClassNotFoundException, SQLException{
-		Connection con=DBHelp.GetConnection();
-		String sql="delete from user where username=?";
-		PreparedStatement ps=con.prepareStatement(sql);
+
+	public static void del(String username) throws ClassNotFoundException, SQLException {
+		Connection con = DBHelp.GetConnection();
+		String sql = "delete from user where username=?";
+		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, username);
 		ps.executeUpdate();
 		DBHelp.close(con, ps, null);
 	}
-	
-	public User getOne(String username) throws ClassNotFoundException, SQLException{
-		Connection con=DBHelp.GetConnection();
-		String sql="select * from user where username=?";
-		PreparedStatement ps=con.prepareStatement(sql);
+
+	public User getOne(String username) throws ClassNotFoundException, SQLException {
+		Connection con = DBHelp.GetConnection();
+		String sql = "select * from user where username=?";
+		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, username);
-		ResultSet rs=ps.executeQuery();
-		User ur=new User();
-		if(rs.next()){ 
+		ResultSet rs = ps.executeQuery();
+		User ur = new User();
+		if (rs.next()) {
 			ur.setUsername(rs.getString("username"));
 			ur.setPassword(rs.getString("password"));
 			ur.setRole(rs.getString("role"));
@@ -116,29 +118,29 @@ public class User {
 		DBHelp.close(con, ps, rs);
 		return ur;
 	}
-	
-	public void update() throws ClassNotFoundException, SQLException{
-		Connection con=DBHelp.GetConnection();
-		String sql="update user set password=?,role=? where username=?";
-		PreparedStatement ps=con.prepareStatement(sql);
+
+	public void update() throws ClassNotFoundException, SQLException {
+		Connection con = DBHelp.GetConnection();
+		String sql = "update user set password=?,role=? where username=?";
+		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, password);
 		ps.setString(2, role);
 		ps.setString(3, username);
 		ps.executeUpdate();
 		DBHelp.close(con, ps, null);
 	}
-	
-	public ArrayList<Map> queryByRole(String role) throws ClassNotFoundException, SQLException{
-		Connection con=DBHelp.GetConnection();
-		String sql="select * from user";
+
+	public ArrayList<Map> queryByRole(String role) throws ClassNotFoundException, SQLException {
+		Connection con = DBHelp.GetConnection();
+		String sql = "select * from user";
 		if (role != null && role != "")
 			sql += " where role=?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		if (role != null && role != "")
 			ps.setString(1, role);
 		ResultSet rs = ps.executeQuery();
-		ArrayList<Map> list=new ArrayList<Map>();
-		while(rs.next()){
+		ArrayList<Map> list = new ArrayList<Map>();
+		while (rs.next()) {
 			Map map = new HashMap();
 			map.put("username", rs.getString(1));
 			map.put("password", rs.getString(2));
@@ -148,56 +150,57 @@ public class User {
 		DBHelp.close(con, ps, rs);
 		return list;
 	}
-	public int getTotalRow() throws ClassNotFoundException, SQLException{
+
+	public int getTotalRow() throws ClassNotFoundException, SQLException {
 		Connection con = DBHelp.GetConnection();
 		Statement st = con.createStatement();
-		String sql="select * from user";
+		String sql = "select * from user";
 		ResultSet rs = st.executeQuery(sql);
-		int rowcount =0;
-		while(rs.next()){
+		int rowcount = 0;
+		while (rs.next()) {
 			rowcount++;
 		}
 		DBHelp.close(con, null, rs);
 		st.close();
 		return rowcount;
 	}
-	public ArrayList<Map> querybypage(String role, int pageNo, int pageSize) throws ClassNotFoundException, SQLException{
-		Connection con=DBHelp.GetConnection();
-		String sql="select * from user";
+
+	public ArrayList<Map> querybypage(String role, int pageNo, int pageSize)
+			throws ClassNotFoundException, SQLException {
+		Connection con = DBHelp.GetConnection();
+		String sql = "select * from user";
 		if (role != null && role != "")
 			sql += " where role=?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		if (role != null && role != "")
 			ps.setString(1, role);
-		
+
 		sql += " order by username";
 		int start = (pageNo - 1) * pageSize;
 		sql += " limit " + start + "," + pageSize;
 		ResultSet rs = ps.executeQuery();
-/*		ArrayList<Map> list=new ArrayList<Map>();
-		while(rs.next()){
-			Map map = new HashMap();
-			map.put("username", rs.getString(1));
-			map.put("password", rs.getString(2));
-			map.put("role", rs.getString(3));
-			list.add(map);
-		}*/
-		ArrayList<Map> list=converList(rs);
+		/*
+		 * ArrayList<Map> list=new ArrayList<Map>(); while(rs.next()){ Map map =
+		 * new HashMap(); map.put("username", rs.getString(1));
+		 * map.put("password", rs.getString(2)); map.put("role",
+		 * rs.getString(3)); list.add(map); }
+		 */
+		ArrayList<Map> list = converList(rs);
 		DBHelp.close(con, ps, rs);
 		return list;
 	}
-	
+
 	public ArrayList<Map> converList(ResultSet rs) throws SQLException {
-	    ArrayList<Map> list = new ArrayList<>();
-	    ResultSetMetaData md = rs.getMetaData();
-	    int columnCount = md.getColumnCount();
-	    while (rs.next()) {
-	        Map map = new HashMap();
-	        for (int i = 1; i < columnCount+1; i++) {
-	            map.put(md.getColumnName(i), rs.getObject(i));
-	        }
-	        list.add(map); 
-	    }   
-	    return list; 
+		ArrayList<Map> list = new ArrayList<>();
+		ResultSetMetaData md = rs.getMetaData();
+		int columnCount = md.getColumnCount();
+		while (rs.next()) {
+			Map map = new HashMap();
+			for (int i = 1; i < columnCount + 1; i++) {
+				map.put(md.getColumnName(i), rs.getObject(i));
+			}
+			list.add(map);
+		}
+		return list;
 	}
 }

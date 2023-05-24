@@ -1,3 +1,5 @@
+<%@ page language="java" pageEncoding="UTF-8" import="java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +44,7 @@
 <body class="d-flex flex-column min-vh-100">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand " href="user_login.html"
+			<a class="navbar-brand " href="user_login.jsp"
 				style="margin-left: 30px;">Storehouse</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -54,9 +56,9 @@
 				style="margin-right: 30px;">
 				<ul class="navbar-nav ms-auto nav-masthead">
 					<li class="nav-item"><a class="nav-link " aria-current="page"
-						href="user_login.html">Sign in</a></li>
+						href="user_login.jsp">Sign in</a></li>
 					<li class="nav-item"><a class="nav-link active"
-						href="user_register.html">Sign up</a></li>
+						href="user_register.jsp">Sign up</a></li>
 				</ul>
 			</div>
 		</div>
@@ -79,7 +81,7 @@
 									id="floatingPassword" placeholder="Password" name="password">
 								<label for="floatingPassword">Password</label>
 							</div>
-							<p id="passwordError" class="text-danger" style="display: none;">密码长度不能少于6位</p>
+							<p class="text-danger">${error }</p>
 							<div class="list-group mb-2">
 								<label class="list-group-item d-flex gap-4"> <input
 									class="form-check-input flex-shrink-0" type="radio" name="role"
@@ -148,33 +150,7 @@
 	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var passwordInput = document.getElementById("floatingPassword");
-    var passwordError = document.getElementById("passwordError");
-    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
 
-    passwordInput.addEventListener("input", function() {
-      var password = passwordInput.value;
-
-      if (password.length < 6) {
-        passwordError.textContent = "密码长度不能少于6位";
-        passwordError.style.display = "block";
-      } else if (!/[a-z]/.test(password)) {
-        passwordError.textContent = "密码必须包含至少一个小写字母";
-        passwordError.style.display = "block";
-      } else if (!/[A-Z]/.test(password)) {
-        passwordError.textContent = "密码必须包含至少一个大写字母";
-        passwordError.style.display = "block";
-      } else if (!/\d/.test(password)) {
-        passwordError.textContent = "密码必须包含至少一个数字";
-        passwordError.style.display = "block";
-      } else {
-        passwordError.style.display = "none";
-      }
-    });
-  });
-</script>
 
 </body>
 </html>

@@ -25,7 +25,7 @@
 <
 style>.rounded-input {
 	border-radius: 1rem;
-}
+} 
 
 .navbar-brand {
 	font-size: 1.5rem;
@@ -100,7 +100,7 @@ style>.rounded-input {
 						aria-expanded="false">${user.username}(${user_role})</button>
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="dropdownMenuButton">
-						<li><a class="dropdown-item" href="user_login.html">Logout</a></li>
+						<li><a class="dropdown-item" href="user_login.jsp">Logout</a></li>
 					</ul>
 				</div>
 			</div>
@@ -142,13 +142,13 @@ style>.rounded-input {
 								value="${inventorydateto}"> <label for="dateInput">to</label>
 						</div>
 					</div>
-					<div class="col-auto my-2 d-flex justify-content-center">
-						<div class="align-self-center">
+					<div class="col-auto my-2  d-flex justify-content-center">
+						<div class="align-self-center mb-2">
 							<button type="submit" class="btn btn-dark me-2"
 								style='border-radius: 13px;'>查询</button>
 							<button type="button" class="btn btn-danger"
 								style="border-radius: 13px;"
-								onclick="document.getElementById('no').value=''; document.getElementsByName('key')[0].value='';document.getElementsByName('inventorydatefrom')[0].value=''; document.getElementsByName('inventorydateto')[0].value='';">清空</button>
+								onclick="document.getElementById('id').value=''; document.getElementById('key').value='';">清空</button>
 						</div>
 					</div>
 				</form>

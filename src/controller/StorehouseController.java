@@ -16,14 +16,14 @@ import javax.servlet.http.HttpSession;
 public class StorehouseController {
 
 	@RequestMapping("/storehouse_list")
-	public String list(@RequestParam(defaultValue="1") int pageNo,String no,String key,String inventorydatefrom,String inventorydateto, HttpSession session, Model model)
-			throws ClassNotFoundException, SQLException {
-		//用户
+	public String list(@RequestParam(defaultValue = "1") int pageNo, String no, String key, String inventorydatefrom,
+			String inventorydateto, HttpSession session, Model model) throws ClassNotFoundException, SQLException {
+		// 用户
 		User user = (User) session.getAttribute("current_user");
 		if (user == null) {
-		    return "redirect:/user_login.html";
+			return "redirect:/user_login.jsp";
 		}
-		//权限判断
+		// 权限判断
 		String user_role;
 		if (user.getRole().equals("0")) {
 			user_role = "Admin";
@@ -38,11 +38,11 @@ public class StorehouseController {
 			inventorydatefrom = "";
 		if (inventorydateto == null)
 			inventorydateto = "";
-		//分页
+		// 分页
 		int pageSize = 6;
 		int totalRow = new Storehouse().getTotalRow();
 		int totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow / pageSize + 1;
-		//list
+		// list
 		ArrayList<Map> list = new Storehouse().querybypage(no, key, inventorydatefrom, inventorydateto, pageNo,
 				pageSize);
 
@@ -57,29 +57,29 @@ public class StorehouseController {
 
 		model.addAttribute("user", user);
 		model.addAttribute("user_role", user_role);
-		
+
 		model.addAttribute("no", no);
 		model.addAttribute("key", key);
 		model.addAttribute("inventorydatefrom", inventorydatefrom);
 		model.addAttribute("inventorydateto", inventorydateto);
-		
-		model.addAttribute("pageNo", pageNo); 
+
+		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("begin", begin);
 		model.addAttribute("end", end);
-		
+
 		model.addAttribute("list", list);
 		return "storehouse_list.jsp";
 	}
 
 	@RequestMapping("/add")
 	public String add(Storehouse sh) throws ClassNotFoundException, SQLException {
-			sh.add();
+		sh.add();
 		return "redirect:/storehouse_list";
 	}
 
 	@RequestMapping("/del")
-	public String delete(String no) throws ClassNotFoundException, SQLException{
+	public String delete(String no) throws ClassNotFoundException, SQLException {
 		Storehouse.del(no);
 		return "redirect:/storehouse_list";
 	}

@@ -1,3 +1,5 @@
+<%@ page language="java" pageEncoding="UTF-8" import="java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +44,7 @@
 <body class="d-flex flex-column min-vh-100">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand " href="user_login.html"
+			<a class="navbar-brand " href="user_login.jsp"
 				style="margin-left: 30px;">Storehouse</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -54,9 +56,9 @@
 				style="margin-right: 30px;">
 				<ul class="navbar-nav ms-auto nav-masthead">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="user_login.html">Sign in</a></li>
+						aria-current="page" href="user_login.jsp">Sign in</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="user_register.html">Sign up</a></li>
+						href="user_register.jsp">Sign up</a></li>
 				</ul>
 			</div>
 		</div>
@@ -79,6 +81,8 @@
 									id="floatingPassword" placeholder="Password" name="password">
 								<label for="floatingPassword">Password</label>
 							</div>
+							<p class="text-danger">${message}</p>
+							
 							<div class="list-group mb-2">
 								<label class="list-group-item d-flex gap-4"> <input
 									class="form-check-input flex-shrink-0" type="radio" name="role"
@@ -98,6 +102,7 @@
 												style="vertical-align: inherit;">仓库、商品管理</font></font></small> </span>
 								</label>
 							</div>
+							
 							<br>
 							<div class="d-grid gap-2 mb-4">
 								<button type="submit" class="btn btn-dark">登录</button>

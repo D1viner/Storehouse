@@ -81,7 +81,7 @@
 						aria-expanded="false">${user.username}(${user_role})</button>
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="dropdownMenuButton">
-						<li><a class="dropdown-item" href="user_login.html">Logout</a></li>
+						<li><a class="dropdown-item" href="user_login.jsp">Logout</a></li>
 					</ul>
 				</div>
 			</div>
