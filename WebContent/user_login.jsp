@@ -111,7 +111,7 @@
 						<hr>
 						<p class="text-center mb-3">还没有账号？</p>
 						<div class="d-grid gap-2">
-							<a href="user_register.html" class="btn btn-outline-secondary">注册</a>
+							<a href="user_register.jsp" class="btn btn-outline-secondary">注册</a>
 						</div>
 					</div>
 				</div>

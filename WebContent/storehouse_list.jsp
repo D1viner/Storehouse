@@ -148,7 +148,7 @@ style>.rounded-input {
 								style='border-radius: 13px;'>查询</button>
 							<button type="button" class="btn btn-danger"
 								style="border-radius: 13px;"
-								onclick="document.getElementById('id').value=''; document.getElementById('key').value='';">清空</button>
+								onclick="document.getElementById('no').value=''; document.getElementById('key').value='';document.getElementsByName('inventorydateto')[0].value='';document.getElementsByName('inventorydatefrom')[0].value='';">清空</button>
 						</div>
 					</div>
 				</form>

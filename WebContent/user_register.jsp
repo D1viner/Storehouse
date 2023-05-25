@@ -109,7 +109,7 @@
 						<hr>
 						<p class="text-center mb-3">已有账号？</p>
 						<div class="d-grid gap-2">
-							<a href="user_login.html" class="btn btn-outline-secondary">登录</a>
+							<a href="user_login.jsp" class="btn btn-outline-secondary">登录</a>
 						</div>
 					</div>
 				</div>
